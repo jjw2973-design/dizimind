@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>디지마인드 (DigiMind) - 은둔고립청년 루틴 & 온기 쉼터</title>
+  <!-- Google Fonts: NeoDunggeunmo & Pretendard -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DungGeunMo&family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="logo-icon">👾</div>
+        <div class="logo-text">
+          <h1>디지마인드 <span>DigiMind</span></h1>
+          <p>은둔고립청년의 건강한 습관 & 온기 쉼터</p>
+        </div>
+      </div>
+
+      <!-- Current User & Points Badge -->
+      <div id="user-status-bar" class="user-status-bar">
+        <span id="logged-user-text">👤 게스트 모드</span>
+        <span id="header-warmth-temp" class="warmth-temp-badge" onclick="openTempGuideModal()">🌡️ 36.5℃</span>
+        <span id="header-points-badge" class="points-badge" onclick="switchTab('shop')">💰 0 P</span>
+        <button id="btn-auth-action" class="btn-sm-auth" onclick="switchTab('auth')">로그인</button>
+      </div>
+
+      <!-- Navigation Tabs (4 Core Pages) -->
+      <nav class="nav-tabs">
+        <button id="tab-auth-btn" class="tab-btn active" onclick="switchTab('auth')">
+          <span class="icon">🔑</span> 1. 로그인/동료들
+        </button>
+        <button id="tab-routine-btn" class="tab-btn" onclick="switchTab('routine')">
+          <span class="icon">🎮</span> 2. 나의 디지몬 & 퀘스트
+        </button>
+        <button id="tab-community-btn" class="tab-btn" onclick="switchTab('community')">
+          <span class="icon">💬</span> 3. 온기 커뮤니티
+        </button>
+        <button id="tab-shop-btn" class="tab-btn gold" onclick="switchTab('shop')">
+          <span class="icon">🎁</span> 4. 온기 포인트/현금환전 상점
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Pages Container -->
+    <main class="main-content">
+
+      <!-- ================= PAGE 1: AUTH & PEERS PROFILE ================= -->
+      <section id="auth-tab" class="tab-content active">
+        <div class="grid-2col">
+          <div class="card auth-card">
+            <div class="auth-toggle-buttons">
+              <button id="btn-show-login" class="btn-toggle-auth active" onclick="toggleAuthMode('login')">로그인</button>
+              <button id="btn-show-register" class="btn-toggle-auth" onclick="toggleAuthMode('register')">회원가입</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="auth-form">
+              <h2>🔑 동료 쉼터 로그인</h2>
+              <p class="sub">접속하여 내 디지몬의 성장을 기록하고 포인트를 적립해 보세요.</p>
+              <div class="form-group">
+                <label>아이디</label>
+                <input type="text" id="login-username" placeholder="예: demo" required />
+              </div>
+              <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" id="login-password" placeholder="비밀번호 입력" required />
+              </div>
+              <button type="submit" class="btn-submit-auth">로그인하기</button>
+              <p class="quick-demo-hint">💡 체험용 계정: 아이디 <code>demo</code> / 비밀번호 <code>123</code></p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" onsubmit="handleRegister(event)" class="auth-form hidden">
+              <h2>🌱 새 동료 회원가입</h2>
+              <p class="sub">자신만의 디지몬 파트너를 선택하여 <b>가입 축하 1,000 P</b>와 기본 온기 36.5℃로 시작하세요.</p>
+              <div class="form-group">
+                <label>아이디</label>
+                <input type="text" id="reg-username" placeholder="영문/숫자 아이디" required />
+              </div>
+              <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" id="reg-password" placeholder="비밀번호 입력" required />
+              </div>
+              <div class="form-group">
+                <label>닉네임 (프로필 및 커뮤니티에 표시)</label>
+                <input type="text" id="reg-nickname" placeholder="예: 용기있는 코로몬" required />
+              </div>
+              <div class="form-group">
+                <label>디지몬 파트너 선택</label>
+                <select id="reg-partner">
+                  <option value="agumon_line">🔥 아구몬 라인 (코로몬 ➔ 아구몬 ➔ 그레이몬 ➔ 메탈그레이몬 ➔ 워그레이몬)</option>
+                  <option value="gabumon_line">🐺 파피몬 라인 (뿔몬 ➔ 파피몬 ➔ 가루몬 ➔ 워가루몬 ➔ 메탈가루몬)</option>
+                  <option value="gatomon_line">🐱 가트몬 라인 (야옹몬 ➔ 플롯트몬 ➔ 가트몬 ➔ 엔젤우몬 ➔ 오파니몬)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn-submit-auth green">회원가입 완료 (+1,000 P)</button>
+            </form>
+          </div>
+
+          <!-- Peers Profile List Card -->
+          <div class="card peers-card">
+            <div class="card-header">
+              <h2>🤝 접속 중인 은둔 동료들의 디지몬 & 온기 온도</h2>
+              <span class="sub">꾸준히 성장해가는 동료들의 디지몬을 응원해보세요.</span>
+            </div>
+            <div id="peers-list" class="peers-grid">
+              <!-- Dynamically rendered peer profile cards -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PAGE 2: MY DIGIMON & LEVEL-BASED QUESTS ================= -->
+      <section id="routine-tab" class="tab-content">
+        <div class="grid-layout">
+          
+          <!-- Digivice Avatar Card -->
+          <div class="digivice-card">
+            <div class="digivice-header">
+              <span class="screen-title">DIGIVICE STATUS</span>
+              <div class="partner-selector">
+                <label for="partner-select">파트너:</label>
+                <select id="partner-select" onchange="changePartnerLine(this.value)">
+                  <option value="agumon_line">🔥 아구몬 라인</option>
+                  <option value="gabumon_line">🐺 파피몬 라인</option>
+                  <option value="gatomon_line">🐱 가트몬 라인</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Screen Area -->
+            <div class="digivice-screen">
+              <div class="screen-glare"></div>
+              
+              <div class="avatar-display">
+                <div id="avatar-graphic" class="avatar-graphic-box stage-1">
+                  <!-- Rendered Digimon SVG Illustration Graphic -->
+                </div>
+                <div class="avatar-info">
+                  <div class="badge-row">
+                    <span id="avatar-stage-badge" class="stage-badge">유년기 I</span>
+                    <span id="digivice-warmth-temp" class="warmth-temp-pill" onclick="openTempGuideModal()">🌡️ 36.5℃</span>
+                    <span id="digivice-points-pill" class="points-pill" onclick="switchTab('shop')">💰 0 P</span>
+                  </div>
+                  <h2 id="avatar-name" class="avatar-name">Lv.1 코로몬 (Koromon)</h2>
+                  <p id="avatar-quote" class="avatar-quote">"오늘도 기지개 한 번으로 시원한 아침을 시작해봐!"</p>
+                </div>
+              </div>
+
+              <!-- Exp Progress Gauge -->
+              <div class="exp-container">
+                <div class="exp-label">
+                  <span>✨ 성취감 게이지 (레벨업 시 퀘스트 업그레이드)</span>
+                  <span id="exp-text">0 / 100 EXP</span>
+                </div>
+                <div class="exp-bar-bg">
+                  <div id="exp-bar-fill" class="exp-bar-fill" style="width: 0%;">
+                    <div class="exp-glow"></div>
+                  </div>
+                </div>
+                <p id="warmth-benefit-hint" class="exp-hint">퀘스트 1개 완료 시마다 <b>+50 P 온기 포인트</b> 적립! 진화 시 <b>+500 P</b>!</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quests Card -->
+          <div class="quests-card">
+            <div class="card-title">
+              <div class="quest-level-header">
+                <h2>🌱 오늘의 루틴 퀘스트 (온기 포인트 보상)</h2>
+                <span id="current-quest-level-badge" class="level-step-badge">1단계 퀘스트</span>
+              </div>
+              <span class="sub-desc">퀘스트 완수 시 성취감 EXP 상승과 함께 <b>+50 P 온기 포인트</b>가 내 지갑에 쌓입니다!</span>
+            </div>
+
+            <div id="quests-list" class="quests-list">
+              <!-- Dynamically populated quest items -->
+            </div>
+
+            <div class="add-quest-box">
+              <h3>➕ 나만의 커스텀 퀘스트 직접 추가하기</h3>
+              <div class="input-group">
+                <input type="text" id="custom-quest-input" placeholder="예: 창문 열고 하늘 구경하기, 따뜻한 물 한 잔 마시기..." />
+                <select id="custom-quest-exp">
+                  <option value="15">+15 EXP</option>
+                  <option value="20" selected>+20 EXP</option>
+                  <option value="25">+25 EXP</option>
+                </select>
+                <button class="btn-add-quest" onclick="addCustomQuest()">추가</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= PAGE 3: COMMUNITY & MULTI-ROUTE SECURITY ================= -->
+      <section id="community-tab" class="tab-content">
+        <div class="community-layout">
+          <div class="community-banner">
+            <div class="banner-text">
+              <h2>🌿 안심 온기 쉼터 & 다각화 보안 신고 센터</h2>
+              <p>따뜻한 응원 수신 시 <b>+20 P 포인트</b>와 <b>온기 온도(36.5℃)</b>가 적립되며, 1:1 비밀 신고 및 긴급 마음 핫라인이 작동합니다.</p>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn-open-secret-report" onclick="openSecretReportModal()">🚨 1:1 비밀 제보센터</button>
+              <button class="btn-open-hotline" onclick="openHotlineModal()">❤️ 24시간 위기 핫라인</button>
+              <button class="btn-open-post-modal" onclick="openPostModal()">✏️ 소식 나누기</button>
+            </div>
+          </div>
+
+          <div id="posts-feed" class="posts-feed">
+            <!-- Dynamically loaded community posts -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PAGE 4: POINT WALLET & REWARD SHOP ================= -->
+      <section id="shop-tab" class="tab-content">
+        <div class="grid-layout">
+          
+          <!-- Wallet Summary Card -->
+          <div class="card wallet-card">
+            <div class="card-header">
+              <h2>💰 내 온기 지갑 (My Wallet)</h2>
+              <span class="sub">성취감과 루틴이 모여 실질적인 보상이 됩니다!</span>
+            </div>
+            
+            <div class="wallet-balance-box">
+              <span class="label">현재 보유 온기 포인트</span>
+              <h1 id="my-points-amount">1,250 P</h1>
+            </div>
+
+            <!-- MOU Partner Business Box -->
+            <div class="mou-partner-box">
+              <h4>🏛️ 지자체 & 청년 복지 지원 안내</h4>
+              <p>본 시스템은 지자체(서울시/보건복지부) 고립청년 지원 사업 예산 및 청년센터 지원 API와 연동되도록 설계된 <b>민관협력 복지 지원 모델</b>입니다.</p>
+            </div>
+
+            <div class="point-logs-section">
+              <h3>📜 최근 포인트 적립 / 사용 내역</h3>
+              <div id="point-logs-list" class="point-logs-list">
+                <!-- Dynamically loaded logs -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Shop & Cash Out Card -->
+          <div class="card shop-card">
+            <div class="card-header">
+              <h2>🛍️ 온기 보상 상점 (기프티콘 & 현금 환전)</h2>
+              <span class="sub">모으신 포인트를 모바일 쿠폰이나 실제 은행 계좌로 교환할 수 있습니다.</span>
+            </div>
+
+            <!-- Gift Card Store Items Grid -->
+            <div class="shop-grid">
+              <div class="shop-item">
+                <div class="item-icon">🏬</div>
+                <div class="item-info">
+                  <h4>CU 편의점 3,000원권</h4>
+                  <p class="cost">3,000 P</p>
+                </div>
+                <button class="btn-buy" onclick="redeemShopItem('CU 편의점 3,000원 모바일 금액권', 3000)">교환하기</button>
+              </div>
+
+              <div class="shop-item">
+                <div class="item-icon">🏪</div>
+                <div class="item-info">
+                  <h4>GS25 편의점 5,000원권</h4>
+                  <p class="cost">5,000 P</p>
+                </div>
+                <button class="btn-buy" onclick="redeemShopItem('GS25 편의점 5,000원 모바일 금액권', 5000)">교환하기</button>
+              </div>
+
+              <div class="shop-item">
+                <div class="item-icon">☕</div>
+                <div class="item-info">
+                  <h4>컴포즈 아메리카노 교환권</h4>
+                  <p class="cost">2,000 P</p>
+                </div>
+                <button class="btn-buy" onclick="redeemShopItem('컴포즈커피 아이스 아메리카노 1잔', 2000)">교환하기</button>
+              </div>
+
+              <div class="shop-item">
+                <div class="item-icon">🛵</div>
+                <div class="item-info">
+                  <h4>배달의민족 10,000원권</h4>
+                  <p class="cost">10,000 P</p>
+                </div>
+                <button class="btn-buy" onclick="redeemShopItem('배달의민족 10,000원 상품권', 10000)">교환하기</button>
+              </div>
+            </div>
+
+            <!-- Cash Out Section -->
+            <div class="cashout-section">
+              <h3>💵 내 은행 계좌로 현금 환전 신청하기</h3>
+              <p class="sub">10,000 P 이상 보유 시 본인 은행 계좌로 현금 입금을 신청할 수 있습니다.</p>
+
+              <form onsubmit="handleCashout(event)" class="cashout-form">
+                <div class="input-row">
+                  <select id="cashout-bank" required>
+                    <option value="">은행 선택</option>
+                    <option value="국민은행">국민은행</option>
+                    <option value="신한은행">신한은행</option>
+                    <option value="우리은행">우리은행</option>
+                    <option value="농협은행">농협은행</option>
+                    <option value="카카오뱅크">카카오뱅크</option>
+                    <option value="토스뱅크">토스뱅크</option>
+                  </select>
+                  <input type="text" id="cashout-account" placeholder="계좌번호 입력 ('-' 제외)" required />
+                  <input type="text" id="cashout-holder" placeholder="예금주명" required />
+                </div>
+                <div class="input-row" style="margin-top: 10px;">
+                  <input type="number" id="cashout-amount" placeholder="환전할 포인트 금액 (최소 10,000 P 이상)" min="10000" required />
+                  <button type="submit" class="btn-cashout-submit">💵 현금 환전 신청</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Redemption History List -->
+            <div class="redemption-history-section">
+              <h3>🎟️ 나의 보상 교환 & 입금 신청 내역</h3>
+              <div id="redemption-list" class="redemption-list">
+                <!-- Dynamically loaded redemption items -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>© 2026 DigiMind. 은둔고립청년의 건강한 성장을 응원합니다.</p>
+    </footer>
+
+    <!-- 1:1 SECRET REPORT MODAL -->
+    <div id="secret-report-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>🚨 1:1 비밀 제보 & 전담 헬프데스크</h3>
+          <button class="btn-close-modal" onclick="closeSecretReportModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px;">
+            커뮤니티에 공개 노출되지 않도록 전담 관리자에게 비밀리에 유해 게시글, 비매너, 금전 요구, 사기 정황을 제보합니다.
+          </p>
+          <div class="form-group">
+            <label>신고 대상 닉네임 / 게시글 ID</label>
+            <input type="text" id="secret-report-target" placeholder="예: 용기있는 아구몬 또는 post_123" required />
+          </div>
+          <div class="form-group">
+            <label>신고 사유 선택</label>
+            <select id="secret-report-category">
+              <option value="abuse">욕설 / 비하 / 불쾌감 유발</option>
+              <option value="scam">금전 요구 / 대출 / 사기 정황</option>
+              <option value="spam">유해 광고 / 부적절한 영업</option>
+              <option value="other">기타 비매너 행동</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>상세 제보 내용</label>
+            <textarea id="secret-report-content" rows="4" placeholder="상세 내용을 적어주시면 24시간 이내에 헬프데스크에서 검토 후 해당 유저를 조치합니다."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" onclick="closeSecretReportModal()">취소</button>
+          <button class="btn-submit" onclick="submitSecretReport()">비밀 제보 접수</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 24시간 위기 핫라인 MODAL -->
+    <div id="hotline-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>❤️ 24시간 긴급 마음 위기 핫라인</h3>
+          <button class="btn-close-modal" onclick="closeHotlineModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.9rem; color: #f8fafc; margin-bottom: 14px;">
+            혼자 견디기 힘든 고립감이나 마음의 위기가 찾아왔을 때, 국가 전문가 긴급 상담센터가 24시간 함께합니다.
+          </p>
+          <ul class="temp-benefit-list">
+            <li><b>☎️ 자살예방 상담전화</b>: 국번없이 <b>109</b> (24시간 무료)</li>
+            <li><b>☎️ 정신건강 상담전화</b>: <b>1577-0199</b></li>
+            <li><b>☎️ 보건복지상담센터</b>: <b>129</b> (청년 복지 지원)</li>
+            <li><b>📱 청년열매 모바일 상담</b>: <b>1393</b></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-submit" onclick="closeHotlineModal()">확인</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WARMTH TEMP GUIDE MODAL -->
+    <div id="temp-guide-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>🌡️ 온기 온도 & 신뢰도 혜택 안내</h3>
+          <button class="btn-close-modal" onclick="closeTempGuideModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 12px;">
+            당근마켓의 매너온도처럼, 타인과의 따뜻한 소통과 일관된 루틴 완성을 통해 <b>온기 온도</b>가 높아지며 다양한 이익을 받게 됩니다.
+          </p>
+          <ul class="temp-benefit-list">
+            <li><b>🌡️ 36.5℃ (기본 온기)</b>: 기본 커뮤니티 및 루틴 이용</li>
+            <li><b>🔥 40.0℃ (따뜻한 촛불)</b>: 디지몬 아바타 '따뜻한 후광 Aura' 림 이펙트 해금!</li>
+            <li><b>⚡ 50.0℃ (든든한 길잡이)</b>: 퀘스트 완수 시 <b>EXP +20% 추가 보너스</b> 혜택!</li>
+            <li><b>✨ 70.0℃ (햇살 선구자)</b>: 커뮤니티 게시글 상단 우대 노출!</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-submit" onclick="closeTempGuideModal()">확인</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVOLUTION MODAL -->
+    <div id="evolution-modal" class="modal-overlay hidden">
+      <div class="evolution-card">
+        <div class="flash-effect"></div>
+        <div class="evo-header">
+          <span class="evo-badge">EVOLUTION COMPLETE!</span>
+          <h1>디지몬 진화 & 퀘스트 업그레이드!</h1>
+        </div>
+        <div class="evo-comparison">
+          <div class="evo-from">
+            <div id="evo-from-img" class="evo-img"></div>
+            <span id="evo-from-name" class="evo-name">이전 단계</span>
+          </div>
+          <div class="evo-arrow">⚡ ➔ ⚡</div>
+          <div class="evo-to">
+            <div id="evo-to-img" class="evo-img glow"></div>
+            <span id="evo-to-name" class="evo-name">새 진화 단계</span>
+          </div>
+        </div>
+        <div class="evo-message">
+          <p id="evo-dialog">"꾸준한 노력으로 성취감 게이지 100%에 도달하셨습니다! 축하 포인트 +500 P가 적립되었습니다."</p>
+        </div>
+        <button class="btn-close-evo" onclick="closeEvolutionModal()">멋져요! 확인</button>
+      </div>
+    </div>
+
+    <!-- POST MODAL -->
+    <div id="post-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>💬 온기 이야기 작성하기</h3>
+          <button class="btn-close-modal" onclick="closePostModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>작성자 닉네임</label>
+            <input type="text" id="post-author-input" readonly value="용기있는 아구몬" />
+          </div>
+          <div class="form-group">
+            <label>오늘 나누고 싶은 이야기나 소소한 성취</label>
+            <textarea id="post-content-input" rows="4" placeholder="예: 오늘 2단계 퀘스트인 이불 개기를 완수하고 +50 P 포인트를 받았어요!"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" onclick="closePostModal()">취소</button>
+          <button class="btn-submit" onclick="submitPost()">등록하기</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
