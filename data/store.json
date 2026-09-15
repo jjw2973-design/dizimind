@@ -1,0 +1,100 @@
+{
+  "routine": {
+    "partnerId": "agumon_line",
+    "exp": 0,
+    "maxExp": 100,
+    "stage": 1,
+    "completedQuests": [],
+    "customQuests": [
+      {
+        "id": "cq1",
+        "title": "따뜻한 차 한 잔 마시며 창밖 풍경 구경하기",
+        "exp": 15
+      }
+    ],
+    "lastResetDate": "2026-08-06"
+  },
+  "posts": [
+    {
+      "id": "post-1",
+      "author": "용기있는 코로몬",
+      "avatarStage": 1,
+      "partnerId": "agumon_line",
+      "content": "오늘 3개월 만에 5분 동안 집 앞 산책을 다녀왔어요. 햇살이 따뜻해서 눈물이 찔끔 났네요. 다들 작은 걸음이라도 응원해요!",
+      "createdAt": "2026-08-05T09:30:00Z",
+      "reactions": {
+        "warm": 12,
+        "support": 18,
+        "hello": 8
+      },
+      "comments": [
+        {
+          "id": "c-1",
+          "author": "다정한 뿔몬",
+          "content": "우와 정말 큰 용기를 내셨네요! 5분 산책 대단해요. 최고의 아침입니다 👏",
+          "createdAt": "2026-08-05T09:42:00Z"
+        }
+      ]
+    },
+    {
+      "id": "post-2",
+      "author": "다정한 뿔몬",
+      "avatarStage": 1,
+      "partnerId": "gabumon_line",
+      "content": "아침에 기지개 켜기와 스마트폰 5분 안보기 미션을 성공했어요. 작은 루틴이지만 성취감 게이지가 올라가는 걸 보니 마음이 든든해지네요.",
+      "createdAt": "2026-08-05T10:15:00Z",
+      "reactions": {
+        "warm": 9,
+        "support": 15,
+        "hello": 5
+      },
+      "comments": []
+    },
+    {
+      "id": "post-3",
+      "author": "상냥한 야옹몬",
+      "avatarStage": 1,
+      "partnerId": "gatomon_line",
+      "content": "방 책상을 깔끔하게 정리하니 마음의 먼지까지 털어진 느낌이에요! 오늘 하루도 모두 화이팅입니다.",
+      "createdAt": "2026-08-05T11:00:00Z",
+      "reactions": {
+        "warm": 7,
+        "support": 11,
+        "hello": 4
+      },
+      "comments": []
+    }
+  ],
+  "users": [
+    {
+      "username": "demo",
+      "password": "123",
+      "nickname": "용기있는 코로몬",
+      "partnerId": "agumon_line",
+      "level": 1,
+      "stage": 1,
+      "exp": 0,
+      "maxExp": 100,
+      "completedQuests": [],
+      "customQuests": [
+        {
+          "id": "cq1",
+          "title": "따뜻한 차 한 잔 마시며 창밖 풍경 구경하기",
+          "exp": 15
+        }
+      ]
+    },
+    {
+      "username": "wjdqkrdh2",
+      "password": "1234",
+      "nickname": "다정한 뿔몬",
+      "partnerId": "gabumon_line",
+      "level": 5,
+      "stage": 1,
+      "exp": 15,
+      "maxExp": 100,
+      "completedQuests": [],
+      "customQuests": []
+    }
+  ]
+}
